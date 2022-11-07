@@ -20,6 +20,7 @@ window.onload = () => {
         moverY: 0,
         atacando: false,
         ataque: 0,
+        direcAtack: 1,
         energia: 100,
         frames: 0,
 
@@ -41,16 +42,16 @@ window.onload = () => {
                 this.atacando = false;
                 ctx.fillStyle = 'white';
                 let ataque = { x: 0, y: 0, width: 0, height: 0 };
-                if (this.speed.y == 0 && this.speed.x == 0 || this.speed.x == 5) {
+                if (this.direcAtack == 1) {
                     ctx.fillRect(player.x + player.width, player.y, player.width * 2, player.height);
                     ataque = { x: player.x + player.width, y: player.y, width: player.width * 2, height: player.height };
-                } else if (this.speed.y == 0 && this.speed.x == -5) {
+                } else if (this.direcAtack == 2) {
                     ctx.fillRect(player.x - 2 * player.width, player.y, player.width * 2, player.height);
                     ataque = { x: player.x - 2 * player.width, y: player.y, width: player.width * 2, height: player.height };
-                } else if (this.speed.y == 5 && this.speed.x == 0) {
+                } else if (this.direcAtack == 3) {
                     ctx.fillRect(player.x, player.y + player.height, player.width, player.height * 2);
                     ataque = { x: player.x, y: player.y + player.height, width: player.width, height: player.height * 2 };
-                } else if (this.speed.y == -5 && this.speed.x == 0) {
+                } else if (this.direcAtack == 4) {
                     ctx.fillRect(player.x, player.y - 2 * player.height, player.width, player.height * 2);
                     ataque = { x: player.x, y: player.y - 2 * player.height, width: player.width, height: player.height * 2 };
                 }
@@ -90,6 +91,13 @@ window.onload = () => {
         });
     }
 
+    function checkColisao(enimigo) {
+        return (enimigo.x === player.x && enimigo.y === player.y ||
+            enimigo.x + enimigo.width === player.x && enimigo.y === player.y ||
+            enimigo.x === player.x && enimigo.y + enimigo.height === player.y ||
+            enimigo.x + enimigo.width === player.x && enimigo.y + enimigo.height === player.y);
+    }
+
     function Update() {
         if (!pause && !gameOver) {
             ctx.fillStyle = "green";
@@ -104,18 +112,29 @@ window.onload = () => {
                 ctx.fillRect(enimigo.x - enimigo.vida / 6, enimigo.y - 5, enimigo.vida / 2, 3);
                 ctx.fillStyle = enimigo.color;
                 ctx.fillRect(enimigo.x, enimigo.y, enimigo.width, enimigo.height);
-                if (enimigo.x !== player.x || enimigo.y !== player.y) {
+                if (checkColisao(enimigo)) {
+                    player.vida -= 10;
+                    enimigos.pop(index);
+                    AddEnimigo();
+                } else {
                     if (enimigo.x > player.x) enimigo.x -= 1;
                     else if (enimigo.x < player.x) enimigo.x += 1;
                     if (enimigo.y > player.y) enimigo.y -= 1;
                     else if (enimigo.y < player.y) enimigo.y += 1;
-                } else {
-                    player.vida -= 10;
-                    enimigos.pop(index);
-                    AddEnimigo();
                 }
             });
             if (enimigos.length == 0) AddEnimigo();
+            if (player.vida <= 0) {
+                gameOver = true;
+                let gameOverHtml = document.createElement("div");
+                gameOverHtml.classList.add("gameOver");
+                gameOverHtml.innerHTML = "GAME OVER";
+                document.querySelector("body").appendChild(gameOverHtml);
+                let tempo = setInterval(() => {
+                    gameOverHtml.style.top = "50%";
+                    clearInterval(tempo);
+                }, 100);
+            }
         }
         ControleHUD();
         ControlePause();
@@ -184,10 +203,32 @@ window.onload = () => {
         if (e.key == "s") {
             player.speed.y = 5;
         }
-        if (e.key == " ") {
+        if (e.key == "ArrowLeft") {
             if (player.energia >= 10) {
                 player.energia -= 10;
                 player.atacando = true;
+                player.direcAtack = 2;
+            }
+        }
+        if (e.key == "ArrowRight") {
+            if (player.energia >= 10) {
+                player.energia -= 10;
+                player.atacando = true;
+                player.direcAtack = 1;
+            }
+        }
+        if (e.key == "ArrowUp") {
+            if (player.energia >= 10) {
+                player.energia -= 10;
+                player.atacando = true;
+                player.direcAtack = 4;
+            }
+        }
+        if (e.key == "ArrowDown") {
+            if (player.energia >= 10) {
+                player.energia -= 10;
+                player.atacando = true;
+                player.direcAtack = 3;
             }
         }
         if (e.key == "p") {
