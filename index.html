@@ -11,11 +11,26 @@
 </head>
 
 <body>
+    <input type="checkbox" id="checkControles" hidden>
+    <label for="checkControles" id="labelControle" class="btn-controles">Controles</label>
+    <div class="controles">
+        <h3 class="titulo">Mover Personagem</h3>
+        <ul class="mover">
+            <li class="botao"><i>A</i> Mover para esquerda</li>
+            <li class="botao"><i>D</i> Mover para direita</li>
+            <li class="botao"><i>W</i> Mover para cima</li>
+            <li class="botao"><i>S</i> Mover para baixo</li>
+        </ul>
+        <h3 class="titulo">Ataques</h3>
+        <ul class="Ataques">
+            <li class="botao"><i class="left"><div class="seta"></div></i> Atacar para esquerda -10 Energia</li>
+            <li class="botao"><i class="rigth"><div class="seta"></div></i> Atacar para direita -10 Energia</li>
+            <li class="botao"><i class="up"><div class="seta"></div></i> Atacar para cima -10 Energia</li>
+            <li class="botao"><i class="down"><div class="seta"></div></i> Atacar para baixo -10 Energia</li>
+            <li class="botao"><i><div class="space"></div></i> Ataque Especial -50 Energia</li>
+        </ul>
+    </div>
     <div class="hud">
-        <div class="img">
-            <img src="./cubo.webp">
-            <span class="pontos">Pontos: 0</span>
-        </div>
         <div class="caixa">
             <div class="barras vida">
                 <div class="barra"></div>
@@ -23,6 +38,7 @@
             <div class="barras energia">
                 <div class="barra"></div>
             </div>
+            <span class="pontos">Pontos: 0</span>
         </div>
     </div>
     <script src="./jogo.js"></script>

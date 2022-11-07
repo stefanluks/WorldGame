@@ -54,8 +54,11 @@ window.onload = () => {
                 } else if (this.direcAtack == 4) {
                     ctx.fillRect(player.x, player.y - 2 * player.height, player.width, player.height * 2);
                     ataque = { x: player.x, y: player.y - 2 * player.height, width: player.width, height: player.height * 2 };
+                } else if (this.direcAtack == 5) {
+                    ctx.fillRect(player.x - player.width * 4, player.y - player.height * 4, player.width * 10, player.height * 10);
+                    ataque = { x: player.x - player.width * 4, y: player.y - player.height * 4, width: player.width * 10, height: player.height * 10 };
                 }
-                checkAtaque(ataque);
+                checkAtaque(ataque, this.direcAtack);
             }
         }
     }
@@ -67,6 +70,9 @@ window.onload = () => {
     let pontos = 0;
     let pause = false;
     let gameOver = false;
+    let estaPausado = false;
+
+    document.getElementById("labelControle").addEventListener("click", () => { pause = !pause; });
 
     Start();
 
@@ -77,10 +83,11 @@ window.onload = () => {
         Update();
     }
 
-    function checkAtaque(ataque) {
+    function checkAtaque(ataque, tipo) {
         enimigos.forEach(enimigo => {
             if (ataque.x < enimigo.x + enimigo.width && ataque.x + ataque.width > enimigo.x && ataque.y < enimigo.y + enimigo.height && ataque.y + ataque.height > enimigo.y) {
-                enimigo.vida -= 50;
+                if (tipo === 5) enimigo.vida -= 100;
+                else enimigo.vida -= 50;
                 if (enimigo.vida <= 0) {
                     pontos += 5;
                     contNv++;
@@ -128,7 +135,7 @@ window.onload = () => {
                 gameOver = true;
                 let gameOverHtml = document.createElement("div");
                 gameOverHtml.classList.add("gameOver");
-                gameOverHtml.innerHTML = "GAME OVER";
+                gameOverHtml.innerHTML = `GAME OVER <span> Pontuação: ${pontos} </span> <button onclick="location.reload()">Reiniciar</button>`;
                 document.querySelector("body").appendChild(gameOverHtml);
                 let tempo = setInterval(() => {
                     gameOverHtml.style.top = "50%";
@@ -156,12 +163,13 @@ window.onload = () => {
     }
 
     function ControlePause() {
-        if (pause) {
+        if (pause && !estaPausado) {
             let pauseHtml = document.createElement("div");
             pauseHtml.classList.add("pause");
             pauseHtml.innerHTML = "PAUSE";
             document.querySelector("body").appendChild(pauseHtml);
-        } else {
+            estaPausado = true;
+        } else if (!estaPausado) {
             if (document.querySelector(".pause")) document.querySelector(".pause").remove();
         }
     }
@@ -203,6 +211,13 @@ window.onload = () => {
         if (e.key == "s") {
             player.speed.y = 5;
         }
+        if (e.key == " ") {
+            if (player.energia >= 50) {
+                player.energia -= 50;
+                player.atacando = true;
+                player.direcAtack = 5;
+            }
+        }
         if (e.key == "ArrowLeft") {
             if (player.energia >= 10) {
                 player.energia -= 10;
@@ -233,6 +248,7 @@ window.onload = () => {
         }
         if (e.key == "p") {
             pause = !pause;
+            estaPausado = false;
         }
     });
 

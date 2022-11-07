@@ -9,10 +9,10 @@ body {
 }
 
 .hud {
-    width: 350px;
-    height: 100px;
+    width: 400px;
+    height: 130px;
     padding: 10px 0px;
-    background-color: gray;
+    background-color: transparent;
     border-radius: 10px;
     position: absolute;
     top: 10px;
@@ -22,38 +22,24 @@ body {
     justify-content: center;
 }
 
-.hud .img {
-    width: 30%;
-    height: 95%;
-    margin-left: 10px;
+.hud span {
+    width: 85%;
+    height: 20%;
+    margin: 10px 5px;
     background-color: transparent;
+    align-self: flex-start;
+    padding-left: 10px;
     border-radius: 10px;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-}
-
-.hud .img img {
-    width: 90%;
-    height: 80%;
-    object-fit: cover;
-    border-radius: 10px;
-}
-
-.hud .img span {
-    width: 100%;
-    height: 10%;
-    background-color: transparent;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     font-size: 20px;
-    color: white;
+    background-color: white;
+    color: black;
 }
 
 .caixa {
-    width: 70%;
+    width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -62,12 +48,47 @@ body {
 }
 
 .barras {
-    width: 90%;
+    width: 75%;
     height: 45%;
     border: 2px solid black;
     border-radius: 10px;
     margin: 2px 0px;
     position: relative;
+}
+
+.vida::after {
+    content: "❤";
+    color: red;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 155;
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    position: absolute;
+    top: 0px;
+    left: -45px;
+    border-radius: 10px;
+}
+
+.energia::after {
+    content: "ϟ";
+    font-size: 40px;
+    color: blue;
+    text-shadow: 0 0 10px yellow;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 155;
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    position: absolute;
+    top: 0px;
+    left: -45px;
+    border-radius: 10px;
 }
 
 .barras::before {
@@ -157,53 +178,178 @@ body {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     text-shadow: 3px 3px 0px red, -3px 3px 0px red, -3px -3px 0px red, 3px -3px 0px red;
     transition: all 2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-.gameOver::before {
-    z-index: 2;
-    content: '';
-    position: absolute;
-    top: -25;
-    left: -50px;
-    width: 50px;
+.gameOver span {
+    font-size: 30px;
+    text-shadow: none;
+    margin: none;
+}
+
+.gameOver button {
+    width: 300px;
     height: 50px;
-    border-radius: 30px;
-    background-color: red;
-    animation: infinite 2s linear rotate;
+    border-radius: 10px;
+    border: none;
+    margin: 10px 0px;
+    background-color: yellow;
+    color: black;
+    font-size: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .7s;
 }
 
-.gameOver::after {
-    z-index: 2;
+.gameOver button:hover {
+    font-size: 35px;
+    letter-spacing: 2px;
+    width: 350px;
+    box-shadow: 0 0 10px black;
+}
+
+.btn-controles {
+    z-index: 150;
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 150px;
+    height: 25px;
+    background-color: yellow;
+    border: none;
+    margin: 0px;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: .3s;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-controles:hover {
+    font-size: 20px;
+    font-weight: bold;
+    box-shadow: 0 0 10px black;
+}
+
+.controles {
+    position: fixed;
+    width: 80%;
+    height: 80%;
+    top: -100%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(240, 248, 255, 0.541);
+    border-radius: 20px;
+    z-index: 150;
+    transition: .7s;
+}
+
+.controles .titulo {
+    font-size: 40px;
+    color: black;
+    margin: 0px;
+    width: 50%;
+    margin: 10px auto;
+    text-align: start;
+}
+
+.controles ul {
+    width: 50%;
+    list-style: none;
+    margin: 10px auto;
+    text-align: start;
+    position: relative;
+}
+
+.controles ul li {
+    font-size: 20px;
+    color: black;
+    margin: 8px 0px;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    position: relative;
+}
+
+.controles ul li i {
+    width: 30px;
+    height: 30px;
+    background-color: black;
+    color: white;
+    border-radius: 50%;
+    margin: 0px 10px;
+    text-transform: capitalize;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.controles ul li i .seta {
+    width: 24px;
+    height: 2px;
+    background-color: red;
+    position: relative;
+}
+
+.controles ul li i .seta::before {
+    z-index: 151;
     content: '';
+    display: block;
     position: absolute;
-    bottom: -25px;
-    right: -50px;
-    width: 50px;
-    height: 50px;
-    border-radius: 30px;
+    top: 54%;
+    left: -2px;
+    width: 14px;
+    height: 3px;
+    border-radius: 0px 3px 3px 0px;
     background-color: red;
-    animation: infinite 2s linear rotate;
+    transform: translate(0, 100%) rotate(45deg);
 }
 
-@keyframes rotate {
-    0% {
-        border-radius: 5px 0px 40px 10px;
-        transform: rotate(0deg);
-    }
-    20% {
-        border-radius: 15px 10px 30px 20px;
-    }
-    40% {
-        border-radius: 25px 20px 20px 30px;
-    }
-    60% {
-        border-radius: 35px 30px 10px 40px;
-    }
-    80% {
-        border-radius: 15px 40px 50px 50px;
-    }
-    100% {
-        border-radius: 5px 0px 40px 10px;
-        transform: rotate(360deg);
-    }
+.controles ul li i .seta::after {
+    z-index: 151;
+    content: '';
+    display: block;
+    position: absolute;
+    top: 46%;
+    left: -2px;
+    width: 14px;
+    height: 3px;
+    border-radius: 0px 3px 3px 0px;
+    background-color: red;
+    transform: translate(0, -100%) rotate(-45deg);
+}
+
+.controles ul li .rigth {
+    transform: rotate(180deg);
+}
+
+.controles ul li .up {
+    transform: rotate(90deg);
+}
+
+.controles ul li .down {
+    transform: rotate(-90deg);
+}
+
+
+/* teste menu com checkbox */
+
+#checkControles:checked~.btn-controles {
+    background-color: blue;
+    color: white;
+}
+
+#checkControles:checked~.controles {
+    top: 50%;
 }
