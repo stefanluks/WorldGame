@@ -5,15 +5,28 @@ window.onload = () => {
     canvas.height = innerHeight;
     document.querySelector("body").appendChild(canvas);
 
+    const img = new Image();
+    img.src = "sprites/player.png";
+
+    const enimigo_img = new Image();
+    enimigo_img.src = "sprites/enimigos.png";
+
     const player = {
         x: 0,
         y: 0,
         vida: 100,
-        width: 20,
-        height: 20,
+        width: 50,
+        height: 50,
         speed: {
             x: 0,
             y: 0
+        },
+        image: img,
+        img_pars: {
+            sx: 0,
+            sy: 0,
+            sw: 395,
+            sh: 375,
         },
         color: 'red',
         moverX: 0,
@@ -37,7 +50,8 @@ window.onload = () => {
 
         desenhar() {
             ctx.fillStyle = this.color;
-            ctx.fillRect(player.x, player.y, player.width, player.height);
+            // ctx.fillRect(player.x, player.y, player.width, player.height);
+            ctx.drawImage(this.image, this.img_pars.sx, this.img_pars.sy, this.img_pars.sw, this.img_pars.sh, this.x, this.y, this.width, this.height);
             if (this.atacando) {
                 this.atacando = false;
                 ctx.fillStyle = 'white';
@@ -115,10 +129,22 @@ window.onload = () => {
             player.desenhar();
 
             enimigos.forEach((enimigo, index) => {
+                console.log(enimigo);
                 ctx.fillStyle = "red";
                 ctx.fillRect(enimigo.x - enimigo.vida / 6, enimigo.y - 5, enimigo.vida / 2, 3);
                 ctx.fillStyle = enimigo.color;
-                ctx.fillRect(enimigo.x, enimigo.y, enimigo.width, enimigo.height);
+                // ctx.fillRect(enimigo.x, enimigo.y, enimigo.width, enimigo.height);
+                ctx.drawImage(
+                    enimigo.image,
+                    enimigo.img_pars.sx + (enimigo.img_pars.sw * index),
+                    enimigo.img_pars.sy,
+                    enimigo.img_pars.sw,
+                    enimigo.img_pars.sh,
+                    enimigo.x,
+                    enimigo.y,
+                    enimigo.width,
+                    enimigo.height
+                );
                 if (checkColisao(enimigo)) {
                     player.vida -= 10;
                     enimigos.pop(index);
@@ -130,6 +156,8 @@ window.onload = () => {
                     else if (enimigo.y < player.y) enimigo.y += 1;
                 }
             });
+
+
             if (enimigos.length == 0) AddEnimigo();
             if (player.vida <= 0) {
                 gameOver = true;
@@ -156,8 +184,15 @@ window.onload = () => {
                 y: Math.floor(Math.random() * canvas.height + 50),
                 color: cores[Math.floor(Math.random() * cores.length - 1)],
                 vida: 100,
-                width: 20,
-                height: 20,
+                width: 50,
+                height: 50,
+                image: enimigo_img,
+                img_pars: {
+                    sx: 0,
+                    sy: 0,
+                    sw: 310,
+                    sh: 310,
+                }
             });
         }
     }
